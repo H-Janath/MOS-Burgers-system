@@ -3,56 +3,56 @@ const products = [
   {
     code: "B1001",
     name: "Classic Burger (Large)",
-    image: "1.PNG",
+    image: "../asserts/img/1.jpeg",
     price: 750.0,
     category: "Burgers",
   },
   {
     code: "B1002",
-    name: "Classic Burger (Regular",
-    image: "2.PNG",
+    name: "Classic Burger (Regular)",
+    image: "../asserts/img/2.jpg",
     price: 1500.0,
     category: "Burgers",
   },
   {
     code: "B1003",
     name: " Turkey Burger",
-    image: "3.PNG",
+    image: "../asserts/img/3.jpg",
     price: 1600.0,
     category: "Burgers",
   },
   {
     code: "B1004",
     name: "Chicken Burger (Large)",
-    image: "4.PNG",
+    image: "../asserts/img/4.PNG",
     price: 1400.0,
     category: "Burgers",
   },
   {
     code: "B1005",
     name: "Chicken Burger (Regular)",
-    image: "5.PNG",
+    image: "../asserts/img/4.PNG",
     price: 800.0,
     category: "Burgers",
   },
   {
     code: "B1006",
     name: "Cheese Burger(Large)",
-    image: "6.PNG",
+    image: "../asserts/img/6.jpeg",
     price: 1000.0,
     category: "Burgers",
   },
   {
     code: "B1007",
     name: "Cheese Burger(Regular)",
-    image: "3.PNG",
+    image: "../asserts/img/6.jpeg",
     price: 600.0,
     category: "Burgers",
   },
   {
     code: "B1008",
     name: "Bacon Burger",
-    image: "4.PNG",
+    image: "../asserts/img/8.jpg",
     price: 650.0,
     category: "Burgers",
   },
@@ -101,21 +101,21 @@ const products = [
   {
     code: "B1016",
     name: " CrispyChickenSubmarine(Large)",
-    image: "11.PNG",
+    image: "../asserts/img/11.PNG",
     price: 2000,
     category: "Submarines",
   },
   {
     code: "B1017",
     name: " CrispyChickenSubmarine(Regular)",
-    image: "12.PNG",
+    image: "../asserts/img/11.PNG",
     price: 1500.0,
     category: "Submarines",
   },
   {
     code: "B1018",
     name: " ChickenSubmarine(Large)",
-    image: "13.PNG",
+    image: "../asserts/img/13.jpg",
     price: 1800.0,
     category: "Submarines",
   },
@@ -297,28 +297,28 @@ const products = [
   {
     code: "B1044",
     name: "Pepsi(330ml)",
-    image: "39.PNG",
+    image: "../asserts/img/39.jpg",
     price: 990.0,
     category: "Beverages",
   },
   {
     code: "B1045",
     name: "Coca-Cola(330ml)",
-    image: "40.PNG",
+    image: "../asserts/img/40.jpeg",
     price: 1230.0,
     category: "Beverages",
   },
   {
     code: "B1046",
     name: "Sprite(330ml)",
-    image: "41.PNG",
+    image: "../asserts/img/41.jpg",
     price: 1500.0,
     category: "Beverages",
   },
   {
     code: "B1047",
     name: "Mirinda(330ml)",
-    image: "42.PNG",
+    image: "../asserts/img/42.jpg",
     price: 850.0,
     category: "Beverages",
   },
@@ -403,3 +403,49 @@ close.addEventListener("click", function () {
   cart.style.right = "-100%";
   container.style.transform = "translateX(0)";
 });
+let listCards = [];
+function addToCard(key) {
+  if (listCards[key] == null) {
+    // copy product form list to list card
+    listCards[key] = JSON.parse(JSON.stringify(products[key]));
+    listCards[key].quantity = 1;
+  }
+  reloadCard();
+}
+function reloadCard() {
+  listCard.innerHTML = "";
+  let count = 0;
+  let totalPrice = 0;
+  listCards.forEach((value, key) => {
+    totalPrice = totalPrice + value.price;
+    count = count + value.quantity;
+    if (value != null) {
+      let newDiv = document.createElement("li");
+      newDiv.innerHTML = `
+              <div><img src="image/${value.image}"/></div>
+              <div>${value.name}</div>
+              <div>${value.price.toLocaleString()}</div>
+              <div>
+                  <button onclick="changeQuantity(${key}, ${
+        value.quantity - 1
+      })">-</button>
+                  <div class="count">${value.quantity}</div>
+                  <button onclick="changeQuantity(${key}, ${
+        value.quantity + 1
+      })">+</button>
+              </div>`;
+      listCard.appendChild(newDiv);
+    }
+  });
+  total.innerText = totalPrice.toLocaleString();
+  quantity.innerText = count;
+}
+function changeQuantity(key, quantity) {
+  if (quantity == 0) {
+    delete listCards[key];
+  } else {
+    listCards[key].quantity = quantity;
+    listCards[key].price = quantity * products[key].price;
+  }
+  reloadCard();
+}
