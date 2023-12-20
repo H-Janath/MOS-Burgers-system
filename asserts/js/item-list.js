@@ -322,3 +322,16 @@ export const products = [
     category: "Beverages",
   },
 ];
+const productsJSON = JSON.stringify(products);
+
+// Store the JSON string in the local storage under a specific key, e.g., "productsData"
+localStorage.setItem("productsData", productsJSON);
+
+// To retrieve the data from local storage, you can use the following code
+const storedProductsJSON = localStorage.getItem("productsData");
+
+// Convert the JSON string back to an array
+const storedProducts = JSON.parse(storedProductsJSON);
+
+// Now, you can use the storedProducts array as needed
+console.log(storedProducts[0].category);
